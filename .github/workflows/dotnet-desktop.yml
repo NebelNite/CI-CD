@@ -67,8 +67,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+     # with:
+     #   fetch-depth: 0
 
     # Install the .NET Core workload
     - name: Install .NET Core
@@ -84,11 +84,16 @@ jobs:
     #- name: Execute unit tests
     #  run: dotnet test
 
-    # Restore the application to populate the obj folder with RuntimeIdentifiers
-    #- name: Restore the application
-    #  run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-    #  env:
-    #    Configuration: ${{ matrix.configuration }}
+    #Restore the application to populate the obj folder with RuntimeIdentifiers
+    - name: Restore the application
+      run: dotnet restore CI_CD_Project
+
+
+    - name: Build
+      run: dotnet build -c Release --no-restore CI_CD_Project
+      
+      
+     # (csproj)
 
     # Decode the base 64 encoded pfx and save the Signing_Certificate
    # - name: Decode the pfx
